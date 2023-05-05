@@ -1,0 +1,19 @@
+digraph {
+    
+    OIDC[label="Identity Provider"]
+    CA[label="Certificate Authority"]
+    
+    subgraph cluster_maintainer {
+        Signer
+        Keypair
+
+        Signer -> Keypair [dir="none"]
+    }
+    
+    
+    Signer -> OIDC [label="1. authenticate"]
+    OIDC -> Signer [label="2. token"]
+    Signer -> CA [label=<3.token,<BR/> public key>] 
+    CA -> Signer [label=<4. certificate,<BR/>commitment key>]
+    Signer -> Artifact [label="5. output"]
+}

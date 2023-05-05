@@ -1,0 +1,42 @@
+digraph {
+    CA[label="Certificate Authority"]
+    Google[label=<Google<BR/>
+        <FONT POINT-SIZE="10">identity provider</FONT>>];
+    subgraph cluster_repo {
+        
+
+        subgraph cluster_map {
+            label="Authorization Record"
+            FooEntry[label=<Foo : Alice>];
+        }
+        
+        label="Server"
+        Foo[label=<Foo<BR/>
+        <FONT POINT-SIZE="10">package</FONT>>]
+    }
+
+    joint [shape="none", label="", width=0, height=0]
+    joint2 [shape="none", label="", width=0, height=0]
+
+    Alice[label=<Alice<BR/>
+        <FONT POINT-SIZE="10">signer</FONT>>];
+    
+    Bob[label=<Bob<BR />
+        <FONT POINT-SIZE="10">verifier</FONT>>];
+
+    Google -> Alice [dir="back" xlabel="1. authenticate"]
+    Google -> CA [label="2. token"] [constraint=false]
+    CA->Alice [xlabel="3. certificate"]
+
+    FooEntry -> joint [dir="none"]
+    Foo -> joint [dir="none"]
+    Google -> joint2 [style="invis"]
+    FooEntry -> joint2 [style="invis"]
+    Foo -> joint2 [style="invis"]
+    CA -> joint2 [style="invis"]
+    joint2 -> joint [style="invis"]
+    joint -> Alice [style="invis"]
+    joint -> Bob [label=<5. download<BR/> and<BR/> verify>]
+    
+    Alice -> Foo [xlabel=<4. sign<BR/> and <BR/>publish>]
+}

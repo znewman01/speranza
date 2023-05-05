@@ -1,0 +1,33 @@
+digraph {
+    compound=true
+
+    Proof[label=<Commitment Equality Proof>]
+
+    subgraph cluster_maintainer {
+        label="Signer"
+        Artifact
+        Keypair
+        CertCommitKey[label="commit_key1"]
+    }
+
+    subgraph cluster_repo {
+        label="Server"
+
+        subgraph cluster_priv_map {
+            label="Private artifact-key map"
+
+            PrivEntry [label="Artifact : commit_key2"]
+        }
+
+        subgraph cluster_pub_map {
+            label="Public Signer Map"
+
+            PubEntry [label="Artifact : commitment"]
+        }
+    }
+
+    PrivEntry -> Keypair [label="1. authenticate" dir="back" lhead=cluster_maintainer ltail=cluster_repo]
+    PubEntry -> Keypair [label=<2. commitment,<BR/>commit_key2> ltail=cluster_repo lhead=cluster_maintainer]
+
+    Keypair -> Proof [label="3. output" ltail=cluster_maintainer]
+}
